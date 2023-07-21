@@ -1,0 +1,115 @@
+#include <iostream>
+
+struct Array {
+    int* data;
+    int size;
+
+    Array(int n) {
+        size = n;
+        data = new int[size];
+    }
+
+    // Destructor
+    ~Array() {
+        delete[] data;
+    }
+
+    // Copy constructor
+    Array(const Array& other) {
+        size = other.size;
+        data = new int[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+    }
+
+    // Overloading the assignment operator
+    Array& operator=(const Array& other) {
+        if (this == &other) {
+            return *this;
+        }
+        delete[] data;
+        size = other.size;
+        data = new int[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+        return *this;
+    }
+
+    // Overloading the addition operator
+    Array operator+(const Array& other) const {
+        if (size != other.size) {
+            std::cout << "Arrays must have the same size to be added!" << std::endl;
+            exit(0);
+        }
+        Array result(size);
+        for (int i = 0; i < size; i++) {
+            result.data[i] = data[i] + other.data[i];
+        }
+        return result;
+    }
+
+    // Overloading the equality operator
+    bool operator==(const Array& other) const {
+        if (size != other.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (data[i] != other.data[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Overloading the inequality operator
+    bool operator!=(const Array& other) const {
+        return !(*this == other);
+    }
+
+    // Overloading the subscript operator
+    int& operator[](int index) {
+        if (index < 0 || index >= size) {
+            std::cout << "Index out of range" << std::endl;
+            exit(0);
+        }
+        return data[index];
+    }
+};
+
+// Overloading the input operator
+std::istream& operator>>(std::istream& is, Array& arr) {
+    for (int i = 0; i < arr.size; i++) {
+        is >> arr[i];
+    }
+    return is;
+}
+
+// Overloading the output operator
+std::ostream& operator<<(std::ostream& os, const Array& arr) {
+    for (int i = 0; i < arr.size; i++) {
+        os << arr.data[i] << " ";
+    }
+    return os;
+}
+
+int main() {
+    int n, m;
+    std::cin >> n;
+    Array arr1(n);
+    std::cin >> arr1;
+
+    std::cin >> m;
+    Array arr2(m);
+    std::cin >> arr2;
+
+    if (arr1 == arr2) {
+        std::cout << "yes" << std::endl;
+    }
+    else {
+        std::cout << "no" << std::endl;
+    }
+
+    return 0;
+}

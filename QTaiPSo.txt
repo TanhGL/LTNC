@@ -1,0 +1,75 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+struct PhanSo{
+	int tu;
+	int mau;
+	void operator = (PhanSo ps){
+		tu = ps.tu;
+		mau = ps.mau;
+	}
+};
+
+istream& operator >> (istream &is, PhanSo &ps);
+ostream& operator << (ostream &os, PhanSo ps);
+int uocchunglonnhat(int a, int b);
+PhanSo rutGon(PhanSo ps);
+PhanSo operator + (PhanSo ps1, PhanSo ps2);
+bool operator == (PhanSo ps1, PhanSo ps2);
+bool operator != (PhanSo ps1, PhanSo ps2);
+
+int main(){
+	PhanSo ps1, ps2;
+	cin >> ps1 >> ps2;
+	cout << ps1 + ps2;
+	return 0;
+}
+
+istream& operator >> (istream &is, PhanSo &ps){
+	is >> ps.tu;
+	do{
+		is >> ps.mau;
+	} while (ps.mau == 0);
+	return is;
+}
+
+ostream& operator << (ostream &os, PhanSo ps){
+	os << ps.tu << "/" << ps.mau;
+	return os;
+}
+
+int uocchunglonnhat(int a, int b){
+	a = abs(a);
+	b = abs(b);
+
+	if (b == 0) return a;
+	else
+		return uocchunglonnhat(b, a%b);
+}
+
+PhanSo rutGon(PhanSo ps){
+	int t = uocchunglonnhat(ps.tu, ps.mau);
+	ps.tu /= t;
+	ps.mau /= t;
+
+	return ps;
+}
+
+PhanSo operator + (PhanSo ps1, PhanSo ps2){
+	PhanSo kq;
+
+	kq.tu = ps1.tu*ps2.mau + ps2.tu*ps1.mau;
+	kq.mau = ps1.mau*ps2.mau;
+
+	return rutGon(kq);
+}
+
+bool operator == (PhanSo ps1, PhanSo ps2){
+	return ps1.tu*ps2.mau == ps2.tu*ps1.mau;
+}
+
+bool operator != (PhanSo ps1, PhanSo ps2){
+	return !(ps1 == ps2);
+}
