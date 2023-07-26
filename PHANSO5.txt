@@ -1,0 +1,56 @@
+#include <iostream>
+
+using namespace std;
+
+class ps {
+	int tu, mau;
+public:
+	ps(int _tu = 0, int _mau = 1) {
+		tu = _tu;
+		mau = _mau;
+	}
+	ps(const ps& p) {
+		tu = p.tu;
+		mau = p.mau;
+	}
+	~ps() {};
+	friend istream& operator >> (istream& is, ps& p) {
+		is >> p.tu >> p.mau;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, ps& p) {
+		os << p.tu << "/" << p.mau;
+		return os;
+	}
+		ps operator + (int n) {
+		ps kq;
+		kq.tu = tu + n;
+		kq.mau = mau;
+		return kq;
+	}
+	ps operator - (int n) {
+		ps kq;
+		kq.tu = tu - n;
+		kq.mau = mau;
+		return kq;
+	}
+};
+
+int main() {
+	ps p;
+	cin >> p;
+	cout << p<<endl;
+	string s;
+	cin>>s;
+	if(s=="++"){
+	    ps kq;
+	    kq = p + 1;
+	    cout<<kq;
+	}
+	if(s=="--"){
+	    ps kq;
+	    kq = p - 1;
+	    cout<<kq;
+	}
+	return 0;
+}

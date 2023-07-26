@@ -1,0 +1,84 @@
+//TGIAC
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class diem {
+	int x, y;//x là hoành độ, y là tung độ
+public:
+	diem(int _x = 0, int _y = 0) {
+		x = _x;
+		y = _y;
+	}
+	diem(const diem& d) {
+		x = d.x;
+		y = d.y;
+	}
+	~diem() {};
+	friend istream& operator >> (istream& is, diem& d) {
+		is >> d.x >> d.y;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, diem& d) {
+		os << "(" << d.x << "," << d.y << ")";
+		return os;
+	}
+	double khoangcach(diem& d) {
+		return sqrt((x - d.x) * (x - d.x) + (y - d.y) * (y - d.y));
+	}
+	bool operator == (diem& d) {
+		if (x == d.x && y == d.y) {
+			return true;
+		}
+		return false;
+	}
+};
+class tgiac {
+	diem d1, d2, d3;
+public:
+	friend istream& operator >> (istream& is, tgiac& t) {
+		is >> t.d1 >> t.d2 >> t.d3;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, tgiac& t) {
+		os << t.d1 << t.d2 << t.d3 << endl;
+		return os;
+	}
+	double chuvi() {
+		return d1.khoangcach(d2) + d2.khoangcach(d3) + d3.khoangcach(d1);
+	}
+	double operator + (tgiac& t) {
+		return chuvi() + t.chuvi();
+	}
+	bool operator < (tgiac& t) {
+		if (chuvi() < t.chuvi()) {
+			return true;
+		}
+		return false;
+	}
+	bool operator = (tgiac& t) {
+		if (chuvi() == t.chuvi()) {
+			return true;
+		}
+		return false;
+	}
+};
+
+int main() {
+	tgiac d1, d2;
+	cin >> d1 >> d2;
+	cout << d1 << d2;
+	if (d1 < d2) {
+		cout << "TRUE" << endl;
+	}
+	else {
+		cout << "FALSE" << endl;
+	}
+	if (d1 = d2) {
+		cout << "TRUE" << endl;
+	}
+	else {
+		cout << "FALSE" << endl;
+	}
+	return 0;
+}

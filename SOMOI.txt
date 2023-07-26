@@ -1,0 +1,60 @@
+//SOMOI
+#include <iostream>
+
+using namespace std;
+
+struct SoMoi {
+  int x;  
+};
+
+istream& operator >> (istream& is, SoMoi &y) {
+    is >> y.x;
+    return is;
+}
+
+ostream& operator << (ostream& os, SoMoi y) {
+    os << "[SoMoi]" << y.x << endl;
+    return os;
+}
+
+int tongSM(SoMoi y){
+    int tong = 0;
+    while(y.x>0){
+        int k = y.x % 10;
+        tong = tong + k;   
+        y.x = y.x / 10;
+    }
+    return tong;
+}
+
+bool operator > (SoMoi y1, SoMoi y2) {
+    int m,n;
+    m=tongSM(y1);
+    n=tongSM(y2);
+    return (m>n);
+}
+
+SoMoi operator + (SoMoi y1, SoMoi y2) {
+    int m,n;
+    int tong;
+    m=tongSM(y1);
+    n=tongSM(y2);;
+    tong = (m+n);
+}
+
+int main()
+{
+    SoMoi x,y,s;
+    cin >> x >> y;
+    cout << x << y;
+    s=x+y;
+    if(x > y){
+        cout << "true" << endl;
+    }
+    else{
+        cout << "false" << endl;
+    }
+    cout << s;
+
+    return 0;
+}

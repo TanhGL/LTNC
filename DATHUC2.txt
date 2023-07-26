@@ -1,0 +1,60 @@
+#include <iostream>
+
+using namespace std;
+
+class BacNhat {
+	int a, b;
+public:
+	BacNhat(int _a = 0, int _b = 0) {
+		a = _a;
+		b = _b;
+	}
+	BacNhat(const BacNhat& n) {
+		a = n.a;
+		b = n.a;
+	}
+	~BacNhat() {};
+	friend istream& operator >> (istream& is, BacNhat& n) {
+		is >> n.a >> n.b;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, BacNhat& n) {
+		os << n.a << "x+" << n.b;
+		return os;
+	}
+	int tinh(int x) {
+		return a * x + b;
+	}
+	void operator + (BacNhat& n) {
+		BacNhat kq;
+		kq.a = a + n.a;
+		kq.b = b + n.b;
+		cout << a << "x+" << b << "+" << n << "=" << kq;
+	}
+	bool operator == (BacNhat& n) {
+		if (a + b == n.a + n.b) {
+			return true;
+		}
+		return false;
+	}
+};
+
+int main() {
+	BacNhat n1, n2;
+	cin >> n1 >> n2;
+	cout << n1 << endl;
+	cout << n2 << endl;
+	n1 + n2;
+	cout << endl;
+	int x;
+	cin >> x;
+	cout << n1.tinh(x) << endl;
+	cout << n2.tinh(x) << endl;
+	if (n1 == n2) {
+		cout << "TRUE";
+	}
+	else {
+		cout << "FALSE";
+	}
+	return 0;
+}

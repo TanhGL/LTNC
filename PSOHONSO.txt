@@ -1,0 +1,156 @@
+#include <iostream>
+
+using namespace std;
+
+class PhanSo {
+	int tu, mau;
+public:
+	PhanSo (int _tu = 0, int _mau = 1) {
+		tu = _tu;
+		mau = _mau;
+	}
+	PhanSo(const PhanSo& p) {
+		tu = p.tu;
+		mau = p.mau;
+	}
+	~PhanSo() {};
+	int gettu() {
+		return tu;
+	}
+	int getmau() {
+		return mau;
+	}
+	void settu(int x) {
+		tu = x;
+	}
+	void setmau(int x) {
+		mau = x;
+	}
+	friend istream& operator >> (istream& is, PhanSo& p) {
+		is >> p.tu >> p.mau;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, PhanSo& p) {
+		PhanSo kq;
+		kq = p.RutGon();
+		if (kq.tu == kq.mau) {
+			os << kq.tu << endl;
+		}
+		else {
+			os << kq.tu << "/" << kq.mau;
+		}
+		return os;
+	}
+	PhanSo operator + (PhanSo& p) {
+		PhanSo kq;
+		kq.tu = tu * p.mau + p.tu * mau;
+		kq.mau = mau * p.mau;
+		return kq;
+	}
+	int ucln(int a, int b) {
+		while (a * b != 0) {
+			if (a > b) {
+				a %= b;
+			}
+			else {
+				b %= a;
+			}
+		}
+		return a + b;
+	}
+	PhanSo RutGon() {
+		int a = ucln(tu, mau);
+		PhanSo kq;
+		kq.tu = tu / a;
+		kq.mau = mau / a;
+		return kq;
+	}
+	bool operator != (PhanSo& p) {
+		if (tu != p.tu || mau != p.mau) {
+			return true;
+		}
+		return false;
+	}
+};
+class honso {
+	int a;
+	PhanSo p;
+public:
+	honso(int _a = 0) {
+		a = _a;
+	}
+	honso(const honso& h) {
+		a = h.a;
+	}
+	~honso() {};
+	friend istream& operator >> (istream& is, honso& h) {
+		is >> h.a >> h.p;
+		return is;
+	}
+	friend ostream& operator << (ostream& os, honso& h) {
+		os << h.a << " " << h.p << endl;
+		return os;
+	}
+	PhanSo hssps() {
+		PhanSo kq;
+		kq.settu(p.getmau() * a + p.gettu());
+		kq.setmau(p.getmau());
+		return kq;
+	}
+	honso rutgon() {
+		honso kq;
+		this->hssps();
+		kq.a = hssps().gettu() / hssps().getmau();
+		kq.p.settu(hssps().gettu() % hssps().getmau());
+		kq.p.setmau(hssps().getmau());
+		return kq;
+	}
+	bool operator != (honso& h) {
+		if (a != h.a || p != h.p) {
+			return true;
+		}
+		return false;
+	}
+	int tongthanhphan() {
+		return a + p.gettu() + p.getmau();
+	}
+	bool operator > (honso& h) {
+		if (tongthanhphan() > h.tongthanhphan()) {
+			return true;
+		}
+		return false;
+	}
+};
+
+int main() {
+	honso h1, h2;
+	cin >> h1 >> h2;
+	if (h1 != h2) {
+		cout << "TRUE" << endl;
+	}
+	else {
+		cout << "FALSE" << endl;
+	}
+	if (h1 > h2) {
+		cout << "TRUE" << endl;
+	}
+	else {
+		cout << "FALSE" << endl;
+	}
+	string s;
+	cin >> s;
+	if (s == "true") {
+		honso h, h3;
+		h = h1.rutgon();
+		h3 = h2.rutgon();
+		cout << h << h3;
+	}
+	else {
+		PhanSo p1, p2;
+		p1 = h1.hssps();
+		p2 = h2.hssps();
+		cout << p1 << endl;
+		cout << p2;
+	}
+	return 0;
+}
