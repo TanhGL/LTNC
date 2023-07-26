@@ -1,0 +1,137 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct NTM{
+    int ngay;
+    int thang;
+    int nam;
+};
+
+// Hàm để tính số ngày trong một tháng
+int soNgayTrongThang(int thang, int nam){
+    // Nếu tháng là 2, kiểm tra năm nhuận
+    if (thang == 2){
+        if ((nam % 4 == 0 && nam % 100 != 0) || (nam % 400 == 0)){
+            return 29; 
+        }
+        else{
+            return 28; 
+        }
+    }
+ 
+    else if (thang == 4 || thang == 6 || thang == 9 || thang == 11){
+        return 30;
+    }
+    else{
+        return 31;
+    }
+}
+
+
+int soNgayTuNgaySinh(NTM ngaySinh, NTM ngayHienTai){
+    int soNgay = 0; // Biến để lưu kết quả
+    if (ngaySinh.ngay == ngayHienTai.ngay && ngaySinh.thang == ngayHienTai.thang && ngaySinh.nam == ngayHienTai.nam){
+        return soNgay;
+    }
+    soNgay += soNgayTrongThang(ngaySinh.thang, ngaySinh.nam) - ngaySinh.ngay;
+    for (int i = ngaySinh.thang + 1; i <= 12; i++){
+        soNgay += soNgayTrongThang(i, ngaySinh.nam);
+    }
+
+    for (int i = ngaySinh.nam + 1; i < ngayHienTai.nam; i++){
+        if ((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)){
+            soNgay += 366;
+        }
+        else{
+            soNgay += 365;
+        }
+    }
+    for (int i = 1; i < ngayHienTai.thang; i++){
+        soNgay += soNgayTrongThang(i, ngayHienTai.nam);
+    }
+    soNgay += ngayHienTai.ngay;
+    return soNgay;
+}
+int tinhTuoi(NTM ngaySinh, NTM ngayHienTai){
+    int tuoi = 0;
+
+    if (ngaySinh.nam < ngayHienTai.nam){
+        tuoi = ngayHienTai.nam - ngaySinh.nam;
+    }
+    else if (ngaySinh.nam == ngayHienTai.nam){
+        tuoi = 0;
+    }
+
+    else{
+        return -1; 
+    }
+
+    if(ngaySinh.thang > ngayHienTai.thang && ngaySinh.nam + 1 == ngayHienTai.nam){
+        return 1;
+    }
+    if (ngaySinh.thang > ngayHienTai.thang){
+        tuoi--;
+    }
+    if (ngaySinh.thang == ngayHienTai.thang){
+        if (ngaySinh.ngay > ngayHienTai.ngay){
+            tuoi--;
+        }
+    }
+
+    return tuoi;
+}
+bool laNgayHomNay(NTM ngaySinh, NTM ngayHienTai){
+    if (ngaySinh.ngay == ngayHienTai.ngay && ngaySinh.thang == ngayHienTai.thang){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+bool laNamNhuan(int nam){
+    if (nam % 4 == 0 || ( nam % 100 == 0 && nam % 400 == 0)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+int main(){
+    NTM ngaySinh; 
+    NTM ngayHienTai; 
+    char chuoi[11],chuoib[11]; 
+    cin >> chuoi;
+    cin >> chuoib;
+    
+    char *token = strtok(chuoi, "/");
+    ngaySinh.ngay = atoi(token); 
+    token = strtok(NULL, "/"); 
+    ngaySinh.thang = atoi(token); 
+    token = strtok(NULL, "/"); 
+    ngaySinh.nam = atoi(token); 
+    char *tokenn = strtok(chuoib, "/"); 
+    ngayHienTai.ngay = atoi(tokenn); 
+    tokenn = strtok(NULL, "/");
+    ngayHienTai.thang = atoi(tokenn); 
+    tokenn = strtok(NULL, "/"); 
+    ngayHienTai.nam = atoi(tokenn); 
+
+
+    cout << soNgayTuNgaySinh(ngaySinh, ngayHienTai) << endl;
+
+    cout << tinhTuoi(ngaySinh, ngayHienTai) << endl;
+if (laNgayHomNay(ngaySinh, ngayHienTai)){
+        cout << "Yes" << endl;
+    }
+    else{
+        cout << "No" << endl;
+    }
+    if (laNamNhuan(ngaySinh.nam)){
+        cout << "Yes" << endl;
+    }
+    else{
+        cout << "No" << endl;
+    }
+
+    return 0;
+}

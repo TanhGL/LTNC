@@ -1,0 +1,163 @@
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+struct Node
+{
+	int data;
+	Node * link;
+};
+
+struct List
+{
+	Node* first;
+	Node* last;
+};
+
+void init(List& l);
+Node* getNode(int x);
+void insertFirst(List& l, int x);
+void insertLast(List& l, int x);
+void xoaDau(List&l);
+void xoaSau(List&l, Node*q);
+void xoasoK(List& l, int k);
+
+int dem(List& l);
+
+int main()
+{
+	List l;
+	init(l);
+	
+	int n, k, x;
+	
+	cin >> n >> k;
+	
+	for (int i = 1; i <= n; i++)
+	{
+		cin >> x;
+		insertLast(l, x);
+	}
+	
+	for (int i = 1; i <= n; i++)
+	{
+		xoasoK(l, k);
+	}
+
+	cout << dem(l) << endl;
+	
+	Node* p = l.first;
+	
+	while (p != NULL)
+	{
+		cout << p->data;
+		p = p->link;
+	}
+	
+	return 0;
+}
+
+void init(List& l)
+{
+	l.first = l.last = NULL;
+}
+
+Node* getNode(int x)
+{
+	Node*p;
+	p = new Node;
+	p->data = x;
+	p->link = NULL;
+	return p;
+}
+
+void insertFirst(List&l, int x)
+{
+	Node* new_ele = getNode(x);
+	if (l.first == NULL)
+	{
+		l.first = l.last = new_ele;
+	}
+	else
+	{
+		new_ele->link = l.first;
+		l.first = new_ele;
+	}
+}
+
+void insertLast(List& l, int x)
+{
+	Node *new_ele = getNode(x);
+	if (l.first == NULL)
+	{
+		l.first = l.last = new_ele;
+	}
+	else
+	{
+		l.last->link = new_ele;
+		l.last = new_ele;
+	}
+}
+
+void xoaDau(List&l)
+{
+	if (l.first != NULL)
+	{
+        Node*p = l.first;
+		l.first = p->link;
+		if (l.first == NULL)
+		{
+			l.last = NULL;
+		}//neu danh sach chi co 1 node
+		delete p;
+    }
+}
+
+void xoaSau(List&l, Node*q)
+{
+	if (q != NULL && q->link != NULL)
+	{
+		Node*p = q->link;
+		q->link = p->link;
+		if (p == l.last)
+		{
+			l.last = q;
+		}
+		delete p;
+	}
+}
+
+void xoasoK(List& l, int k)
+{
+	if (l.first != NULL)
+	{
+		Node *p = l.first;
+		if (p->data == k) xoaDau(l);
+		else
+		{
+			for (Node*p = l.first; p->link != NULL; p = p->link)
+			{
+				if (p->link->data == k)
+				{
+					xoaSau(l, p);
+					break;
+				}
+			}
+		}
+	}
+	else return;
+}
+
+int dem(List &l)
+{
+	Node*p = l.first;
+	int dem = 0;
+	while (p != NULL)
+	{
+		dem++;
+		p = p->link;
+	}
+	return dem;
+}

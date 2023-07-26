@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <algorithm>
+
+using namespace std;
+
+string taoMaMonHoc(string tenMonHoc, map<string, int> &maMonHoc) {
+    stringstream ss(tenMonHoc);
+    string tu;
+    string ma = "";
+    vector<string> cacTu;
+
+    while (ss >> tu) {
+        ma += toupper(tu[0]);
+        cacTu.push_back(tu);
+    }
+
+    string maGoc = ma;
+    if (maMonHoc[ma] == 0) {
+        maMonHoc[ma]++;
+        return ma;
+    }
+
+    for (int i = 1; i <= cacTu.size(); ++i) {
+        ma = maGoc;
+        for (int j = 0; j < i; ++j) {
+            ma += static_cast<char>(tolower(cacTu[cacTu.size() - 1 - j].back()));
+        }
+        if (maMonHoc[ma] == 0) {
+            maMonHoc[ma]++;
+            return ma;
+        }
+        int pos;        
+        for(int z = tenMonHoc.size();z > 0;z--){
+            if(tenMonHoc[z] == ' '){
+                pos = z;
+            }
+        }
+        // Thêm bước này, tìm vị trí của khoảng trắng thứ i từ đầu xuống, và chèn vào ký tự sau đó
+
+        if (pos != string::npos && pos + 1 < tenMonHoc.size()) {
+          ma.insert(ma.begin() + pos - 1, tolower(tenMonHoc[pos+ 1]));
+        }
+        if (maMonHoc[ma] == 0) {
+            maMonHoc[ma]++;
+            return ma;
+        }
+    }
+
+    return "";
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cin.ignore();
+    map<string, int> maMonHoc;
+
+    for (int i = 0; i < n; i++) {
+        string tenMonHoc;
+        getline(cin, tenMonHoc);
+        cout << taoMaMonHoc(tenMonHoc, maMonHoc) << endl;
+    }
+
+    return 0;
+}

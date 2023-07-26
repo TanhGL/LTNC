@@ -1,0 +1,82 @@
+#include <iostream>
+using namespace std;
+
+// Định nghĩa cấu trúc cho một nút trong danh sách liên kết đơn
+struct ListNode {
+    int val;
+    ListNode* next;
+
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+// Hàm để chèn một nút mới vào cuối danh sách liên kết
+void insertNode(ListNode*& head, int val) {
+    ListNode* newNode = new ListNode(val);
+    if (head == nullptr) {
+        head = newNode;
+    } else {
+        ListNode* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+// Hàm để tìm nút giữa của danh sách liên kết đơn
+ListNode* findMiddleNode(ListNode* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+
+    ListNode* slow = head;
+    ListNode* fast = head;
+
+    // Sử dụng phương pháp của "con thỏ và con rùa"
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+// Hàm để in các nút của danh sách liên kết
+void printLinkedList(ListNode* head) {
+    ListNode* temp = head;
+    while (temp != nullptr) {
+        cout << temp->val << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+// Hàm để giải phóng bộ nhớ của danh sách liên kết sau khi sử dụng xong
+void deleteLinkedList(ListNode*& head) {
+    while (head != nullptr) {
+        ListNode* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    ListNode* head = nullptr;
+
+    // Nhập các giá trị của danh sách liên kết
+    for (int i = 0; i < n; i++) {
+        int val;
+        cin >> val;
+        insertNode(head, val);
+    }
+    ListNode* middleNode = findMiddleNode(head);
+    printLinkedList(middleNode);
+
+    // Giải phóng bộ nhớ sau khi sử dụng xong
+    deleteLinkedList(head);
+
+    return 0;
+}

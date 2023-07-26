@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+bool findTriplet(Node* head) {
+    vector<int> arr;
+    Node* curr = head;
+    while (curr != NULL) {
+        arr.push_back(curr->data);
+        curr = curr->next;
+    }
+
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i+1; j < n; j++) {
+            for (int k = j+1; k < n; k++) {
+                if (arr[i] == arr[j] + arr[k] ||
+                    arr[j] == arr[i] + arr[k] ||
+                    arr[k] == arr[i] + arr[j]) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    Node* head = NULL;
+    Node* tail = NULL;
+
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+
+        Node* newNode = new Node;
+        newNode->data = x;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    if (findTriplet(head)) {
+        cout << "YES" << endl;
+    } else {
+        cout << "NO" << endl;
+    }
+
+    return 0;
+}

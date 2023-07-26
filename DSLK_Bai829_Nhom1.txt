@@ -1,0 +1,156 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Province {
+    string name;
+    long long int square;
+    long long int popularity;
+    Province* next; 
+
+    void operator=(long long int i) {
+        name = "";
+        square = i;
+        popularity = i;
+    }
+};
+
+void insertProvince(Province*& head, Province* newNode) {
+    if (head == nullptr) {
+        head = newNode;
+    } else {
+        Province* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+istream& operator>>(istream& cin, Province*& p) {
+    p = new Province;
+    getline(cin, p->name);
+    cin >> p->square >> p->popularity;
+    cin.ignore();
+    p->next = nullptr;
+    return cin;
+}
+
+ostream& operator<<(ostream& cout, Province* p) {
+    cout << p->name << endl << p->square << endl << p->popularity << endl;
+    return cout;
+}
+
+long long int sumSquare(Province* head) {
+    long long int sum = 0;
+    Province* temp = head;
+    while (temp != nullptr) {
+        sum += temp->square;
+        temp = temp->next;
+    }
+    return sum;
+}
+
+
+int findMaxSquare(Province* head) {
+    int maxIndex = 1;
+    long long int maxSquare = head->square;
+    int currentIndex = 1;
+    Province* temp = head->next;
+    while (temp != nullptr) {
+        currentIndex++;
+        if (temp->square > maxSquare) {
+            maxSquare = temp->square;
+            maxIndex = currentIndex;
+        }
+        temp = temp->next;
+    }
+    return maxIndex;
+}
+
+
+string findMaxPopularity(Province* head) {
+    string maxName = head->name;
+    long long int maxPopularity = head->popularity;
+    Province* temp = head->next;
+    
+    while (temp != nullptr) {
+        if (temp->popularity > maxPopularity) {
+            maxPopularity = temp->popularity;
+            maxName = temp->name;
+        }
+        temp = temp->next;
+    }
+    
+    return maxName;
+}
+
+
+void insertionSortBySquare(Province*& head) {
+    if (head == nullptr || head->next == nullptr) {
+        return;
+    }
+
+    Province* sortedList = nullptr;
+    Province* current = head;
+    while (current != nullptr) {
+        Province* next = current->next;
+        if (sortedList == nullptr || current->square >= sortedList->square) {
+            current->next = sortedList;
+            sortedList = current;
+        } else {
+            Province* temp = sortedList;
+            while (temp->next != nullptr && temp->next->square > current->square) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+        current = next;
+    }
+    head = sortedList;
+}
+
+void deleteLinkedList(Province*& head) {
+    while (head != nullptr) {
+        Province* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+
+int main() {
+    Province* head = nullptr; 
+
+    long long int n;
+    cin >> n;
+    cin.ignore();
+    for (long long int i = 0; i < n; ++i) {
+        Province* newNode;
+        cin >> newNode;
+        insertProvince(head, newNode);
+    }
+
+    
+    cout << sumSquare(head) << endl;
+    cout << findMaxSquare(head) << endl;
+
+    
+    cout << findMaxPopularity(head) << endl;
+
+    
+    insertionSortBySquare(head);
+
+   
+    Province* temp = head;
+    while (temp != nullptr) {
+        cout << temp->name << endl;
+        temp = temp->next;
+    }
+
+    
+    deleteLinkedList(head);
+
+    return 0;
+}

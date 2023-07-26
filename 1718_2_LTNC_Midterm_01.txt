@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cmath>
+#include <stdio.h>
+using namespace std;
+
+struct SoPhuc{
+    float a,b;
+};
+istream& operator>>(istream& is, SoPhuc &sp){
+    is>>sp.a>>sp.b;
+    return is;
+}
+void xuat(SoPhuc sp){
+    if (sp.a==0)
+        cout<<"{"<<sp.b<<"i} ";
+    else{ 
+        if (sp.b==0)
+            cout<<"{"<<sp.a<<"} ";
+        else if (sp.b==-1)
+            cout<<"{"<<sp.a<<"-i} ";
+        else if (sp.b==1)
+            cout<<"{"<<sp.a<<"+i} ";
+        else if (sp.b<-1)
+            cout<<"{"<<sp.a<<sp.b<<"i} ";
+        else
+            cout<<"{"<<sp.a<<"+"<<sp.b<<"i} ";
+    }
+}
+float tinhModun(SoPhuc sp){
+    float s=sqrt(pow(sp.a,2)+pow(sp.b,2));
+    return s;
+}
+SoPhuc tinhTong(SoPhuc sp1, SoPhuc sp2){
+    SoPhuc sp;
+    sp.a=sp1.a+sp2.a;
+    sp.b=sp1.b+sp2.b;
+    return sp;
+}
+int main(){
+    SoPhuc s;
+    SoPhuc *p;
+    p=new SoPhuc[100];
+    int n=0;
+    while (cin>>s){
+        p[n++]=s;
+    }
+    for (int i=0;i<n;i++){
+        xuat(p[i]);
+    }
+    cout<<endl;
+    for (int i=0;i<n;i++){
+        printf("%.2f ",tinhModun(p[i]));
+    }
+    cout<<endl;
+    SoPhuc tong;
+    tong.a=0;
+    tong.b=0;
+    for (int i=0;i<n;i++){
+        tong=tinhTong(tong,p[i]);
+    }
+    xuat(tong);
+    return 0;
+}

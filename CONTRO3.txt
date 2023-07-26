@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void insert(Node** head, int value, int pos) {
+    Node* new_node = new Node;
+    new_node->data = value;
+
+    if (pos == 1) {
+        new_node->next = *head;
+        *head = new_node;
+        return;
+    }
+
+    Node* prev_node = *head;
+    for (int i = 1; i < pos - 1; i++) {
+        prev_node = prev_node->next;
+    }
+
+    new_node->next = prev_node->next;
+    prev_node->next = new_node;
+}
+
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int n, a, k;
+    cin >> n >> a >> k;
+
+    Node* head = NULL;
+    int value;
+    for (int i = 0; i < n; i++) {
+        cin >> value;
+        insert(&head, value, i + 1);
+    }
+
+    insert(&head, a, k);
+
+    int size = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        size++;
+        temp = temp->next;
+    }
+
+    cout << size << endl;
+    printList(head);
+
+    return 0;
+}

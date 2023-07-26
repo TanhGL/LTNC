@@ -1,0 +1,120 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+struct Node
+{
+	int data;
+	Node *next;
+};
+struct List
+{
+	Node* first;
+	Node* last;
+};
+Node* GetNode(int x);
+void Init(List &l);
+void AddFirst(List& l, Node* p);
+void AddLast(List& l, Node* p);
+void insertAfter(List& l, Node*p, Node* New);
+void InsertAt(List& l, int x, int y);
+void CoutLL(List l);
+Node* Search(List l, int x);
+int main(){
+	List l;
+	Init(l);
+	int n, a;
+	cin >> n;
+	for (int i = 0; i < n; i++){
+		cin >> a;
+		AddLast(l, GetNode(a));
+	}
+	//int min = 100, max = 0;
+	Node*p = l.first;
+	int min = p->data, max = p->data;
+	
+	while (p != NULL){
+		if (p->data < min)min = p->data;
+		if (p->data>max)max = p->data;
+		p = p->next;
+	}
+	p = l.first;
+	int c = 1;
+	cout << max<<endl;
+	while (p!=NULL)
+	{
+		if (p->data == max) cout << c<<" ";
+		c++;
+		p = p->next;
+	}
+	cout <<endl<< min<<endl;
+	c = 1;
+	p = l.first;
+	while (p != NULL)
+	{
+		if (p->data == min) cout << c<<" ";
+		c++;
+		p = p->next;
+	}
+	return 0;
+}
+Node* GetNode(int x){
+	Node *p;
+	p = new Node;
+	p->data = x;
+	p->next = NULL;
+	return p;
+}
+void Init(List &l){
+	l.first = l.last = NULL;
+}//khoi tao danh sach
+void AddFirst(List& l, Node* p){
+	if (l.first == NULL){
+		l.first = l.last = p;
+	}
+	else{
+		p->next = l.first;
+		l.first = p;
+	}
+}
+void CoutLL(List l){
+
+	for (Node* i = l.first; i != NULL; i = i->next){
+		cout << i->data << " ";
+	}
+}
+void AddLast(List& l, Node* p){
+	if (l.first == NULL){
+		l.first = l.last = p;
+	}
+	else{
+		l.last->next = p;
+		l.last = p;
+	}
+}
+void InsertAfter(List& l, Node*p, Node* New){
+	if (p != NULL&&New != NULL){
+		New->next = p->next;
+		p->next = New;
+		if (p == l.last){
+			l.last = New;
+		}
+	}
+}
+Node* Search(List l, int x){
+	Node* p = l.first;
+	while (p != NULL&&p->data != x){
+		p = p->next;
+	}
+	return p;
+}void InsertAt(List& l, int x, int y){
+	if (l.first->data == x){
+		AddFirst(l, GetNode(y));
+	}
+	for (Node*i = l.first; i != NULL; i = i->next){
+		if (i->next->data == x){
+			InsertAfter(l, i, GetNode(y));
+		}
+	}
+}

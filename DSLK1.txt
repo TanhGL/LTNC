@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    char info;
+    Node* next;
+};
+
+// Hàm tạo một node mới
+Node* createNode(char ch) {
+    Node* newNode = new Node();
+    newNode->info = ch;
+    newNode->next = nullptr;
+    return newNode;
+}
+
+// Hàm tạo một danh sách liên kết đơn từ một dãy ký tự
+Node* createList(char arr[], int n) {
+    Node* head = createNode(arr[0]);
+    Node* prev = head;
+    for (int i = 1; i < n; i++) {
+        Node* newNode = createNode(arr[i]);
+        prev->next = newNode;
+        prev = newNode;
+    }
+    return head;
+}
+
+// Hàm loại bỏ các phần tử vi phạm điều kiện khỏi danh sách
+void removeNonIncreasing(Node* head) {
+    Node* prev = head;
+    Node* curr = head->next;
+    while (curr != nullptr) {
+        if (curr->info <= prev->info) {
+            prev->next = curr->next;
+            Node* temp = curr;
+            curr = curr->next;
+            delete temp;
+        } else {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+}
+
+// Hàm in ra các phần tử của danh sách
+void printList(Node* head) {
+    while (head != nullptr) {
+        cout << head->info << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    const int MAX = 100;
+    char arr[MAX];
+    int n = 0;
+    while (cin >> arr[n++]);
+
+    Node* head = createList(arr, n - 1);
+    removeNonIncreasing(head);
+    printList(head);
+
+    return 0;
+}

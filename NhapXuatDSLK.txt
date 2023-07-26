@@ -1,0 +1,121 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int data) : data(data), next(nullptr) {}
+};
+
+class LinkedList {
+public:
+    Node* head;
+    LinkedList() : head(nullptr) {}
+    void append(int data) {
+        Node* new_node = new Node(data);
+        if (!head) {
+            head = new_node;
+            return;
+        }
+        Node* last_node = head;
+        while (last_node->next) {
+            last_node = last_node->next;
+        }
+        last_node->next = new_node;
+    }
+};
+
+LinkedList createLinkedList(const vector<int>& elements) {
+    LinkedList linked_list;
+    for (int element : elements) {
+        linked_list.append(element);
+    }
+    return linked_list;
+}
+
+void readInput(const string& file_name, vector<int>& elements, int& k) {
+    ifstream file(file_name);
+    if (file.is_open()) {
+        string line;
+      
+        getline(file, line);
+        stringstream ss(line);
+        int num;
+        while (ss >> num) {
+            elements.push_back(num);
+        }
+       
+        getline(file, line);
+        k = stoi(line);
+        file.close();
+    }
+}
+
+void writeOutput(const string& file_name, const LinkedList& linked_list, int k) {
+    ofstream file(file_name);
+    if (file.is_open()) {
+       
+        Node* current_node = linked_list.head;
+        while (current_node) {
+            file << current_node->data << " ";
+            current_node = current_node->next;
+        }
+        file << "\n";
+
+        // Write elements less than k
+        current_node = linked_list.head;
+        bool less_than_k = false;
+        while (current_node) {
+            if (current_node->data < k) {
+                file << current_node->data << " ";
+                less_than_k = true;
+            }
+            current_node = current_node->next;
+        }
+        if (!less_than_k) {
+            file << "-1";
+        }
+        file << "\n";
+
+ 
+        current_node = linked_list.head;
+        bool greater_than_k = false;
+        while (current_node) {
+            if (current_node->data >= k) {
+                file << current_node->data << " ";
+                greater_than_k = true;
+            }
+            current_node = current_node->next;
+        }
+        if (!greater_than_k) {
+            file << "-1";
+        }
+        file << "\n";
+
+
+        current_node = linked_list.head;
+        while (current_node) {
+            if (current_node->next == nullptr) {
+                file << k << " ";
+            }
+            file << current_node->data << " ";
+            current_node = current_node->next;
+        }
+        file.close();
+    }
+}
+
+int main() {
+    vector<int> elements;
+    int k;
+
+    readInput("input.txt", elements, k);
+    LinkedList linked_list = createLinkedList(elements);
+    writeOutput("output.txt", linked_list, k);
+
+    return 0;
+}
