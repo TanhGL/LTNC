@@ -1,0 +1,71 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+struct PhanSo{
+    int tu, mau;
+};
+
+int main(){
+    PhanSo p1, p2, kq;
+    cin >> p1.tu >> p1. mau >> p2.tu >> p2. mau;
+    if( p1.mau == 0 || p2.mau == 0) cout <<"-1";
+    else{
+        kq.tu = p1.tu*p2.mau + p1.mau*p2.tu;
+        kq.mau = p1.mau*p2.mau;
+        int d = __gcd(kq.tu, kq.mau);
+        kq.tu /= d;
+        kq.mau /= d;
+        if(kq.tu == 0) cout <<"0" << endl;
+        else {
+            if(kq.mau < 0){
+                kq.mau *= -1;
+                kq.tu *= -1;
+            }
+            cout << kq.tu << "/" << kq.mau << endl;
+        }
+        
+        kq.tu = p1.tu*p2.mau - p1.mau*p2.tu;
+        kq.mau = p1.mau*p2.mau;
+        d = __gcd(kq.tu, kq.mau);
+        kq.tu /= d;
+        kq.mau /= d;
+        if(kq.tu == 0) cout <<"0" << endl;
+        else {
+            if(kq.mau < 0){
+                kq.mau *= -1;
+                kq.tu *= -1;
+            }
+            cout << kq.tu << "/" << kq.mau << endl;
+        }
+        
+        kq.tu = p1.tu*p2.tu;
+        kq.mau = p1.mau*p2.mau;
+        d = __gcd(kq.tu, kq.mau);
+        kq.tu /= d;
+        kq.mau /= d;
+        if(kq.tu == 0) cout <<"0" << endl;
+        else {
+            if(kq.mau < 0){
+                kq.mau *= -1;
+                kq.tu *= -1;
+            }
+            cout << kq.tu << "/" << kq.mau << endl;
+        }
+        
+        if(p2.tu != 0){
+            kq.tu = p1.tu*p2.mau;
+            kq.mau = p1.mau*p2.tu;
+            d = __gcd(kq.tu, kq.mau);
+            kq.tu /= d;
+            kq.mau /= d;
+            if(kq.tu == 0) cout <<"0" << endl;
+            else {
+            if(kq.mau < 0){
+                kq.mau *= -1;
+                kq.tu *= -1;
+            }
+            cout << kq.tu << "/" << kq.mau << endl;
+        }
+        }
+    }
+}

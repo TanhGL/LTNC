@@ -1,0 +1,51 @@
+
+#include <iomanip>
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Diem {
+    int x, y;
+};
+
+// Hàm tính khoảng cách giữa hai điểm
+double khoangCach(Diem A, Diem B) {
+    return sqrt(pow(A.x - B.x, 2) + pow(A.y - B.y, 2));
+}
+
+int main() {
+    Diem A, B, C;
+    cin >> A.x >> A.y >> B.x >> B.y >> C.x >> C.y;
+
+    // Xuất tọa độ 3 điểm
+    cout << "(" << A.x << ", " << A.y << ")" << " ";
+    cout << "(" << B.x << ", " << B.y << ")" << " ";
+    cout << "(" << C.x << ", " << C.y << ")" << endl;
+
+    // Tính độ dài các đoạn thẳng
+    double AB = khoangCach(A, B);
+    double AC = khoangCach(A, C);
+    double BC = khoangCach(B, C);
+
+    // Xuất độ dài các đoạn thẳng
+    cout << fixed << setprecision(3) << AB << endl;
+    cout << fixed << setprecision(3) << AC << endl;
+    cout << fixed << setprecision(3) << BC << endl;
+
+    // Kiểm tra xem 3 điểm có thẳng hàng không
+    if ((B.y - A.y) * (C.x - B.x) == (C.y - B.y) * (B.x - A.x)) {
+        cout << "-1" << endl;
+    } else {
+        // Tính diện tích tam giác bằng công thức Heron
+        double p = (AB + AC + BC) / 2;
+        double S = sqrt(p * (p - AB) * (p - AC) * (p - BC));
+
+        // Tính chu vi tam giác
+        double CV = AB + AC + BC;
+
+        // Xuất diện tích và chu vi tam giác
+        cout << fixed << setprecision(3) << S << " " << CV << endl;
+    }
+
+    return 0;
+}
