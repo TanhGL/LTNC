@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int value;
+    Node* next;
+};
+
+class LinkedList {
+    Node* head;
+    Node* tail;
+    int count;
+    int evenCount;
+    int oddCount;
+
+public:
+    LinkedList() {
+        head = NULL;
+        tail = NULL;
+        count = 0;
+        evenCount = 0;
+        oddCount = 0;
+    }
+
+    void addTail(int value) {
+        Node* newNode = new Node;
+        newNode->value = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+
+        count++;
+
+        if (value % 2 == 0) {
+            evenCount++;
+        } else {
+            oddCount++;
+        }
+    }
+
+    void print() {
+        Node* pCur = head;
+        while (pCur != NULL) {
+            cout << pCur->value << " ";
+            pCur = pCur->next;
+        }
+        cout << endl;
+    }
+
+    void printReverse() {
+        printReverseUtil(head);
+        cout << endl;
+    }
+    int getCount() {
+        return count;
+    }
+
+    int getEvenCount() {
+        return evenCount;
+    }
+
+    void printExceptFirst() {
+        if (head == NULL) {
+            cout << "NO" << endl;
+            return;
+        }
+
+        Node* pCur = head->next;
+        while (pCur != NULL) {
+            cout << pCur->value << " ";
+            pCur = pCur->next;
+        }
+        cout << endl;
+    }
+
+    ~LinkedList() {
+        Node* pCur = head;
+        while (pCur != NULL) {
+            Node* pTemp = pCur;
+            pCur = pCur->next;
+            delete pTemp;
+        }
+    }
+
+private:
+    void printReverseUtil(Node* pCur) {
+        if (pCur == NULL) {
+            return;
+        }
+        printReverseUtil(pCur->next);
+        cout << pCur->value << " ";
+    }
+};
+
+int main() {
+    LinkedList linkedList;
+    int value;
+    while (cin >> value) {
+        linkedList.addTail(value);
+    }
+
+    int count = linkedList.getCount();
+    if (count == 0) {
+        cout << "NO" << endl;
+    } else {
+        cout << count << endl;
+    }
+
+    linkedList.printExceptFirst();
+
+    int evenCount = linkedList.getEvenCount();
+    if (evenCount == 0) {
+        cout << "NO" << endl;
+    } else {
+        cout << evenCount << endl;
+    }
+
+    return 0;
+}
