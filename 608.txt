@@ -1,0 +1,29 @@
+#include<iostream>
+#include<string>
+#include<iomanip>
+using namespace std;
+
+struct hopSua {
+ string nhanHieu;
+ double trongLuong;
+ struct Ngay {
+  int ngay, thang, nam;
+ }hanSuDung;
+};
+istream& operator>>(istream& is, hopSua& hs) {
+ getline(is, hs.nhanHieu);
+ is >>hs.trongLuong>>hs.hanSuDung.ngay>>hs.hanSuDung.thang>>hs.hanSuDung.nam;
+ return is;
+}
+ostream& operator<<(ostream& os, hopSua hs) {
+ os << hs.nhanHieu<<endl;
+ os <<setprecision(1)<<fixed<< hs.trongLuong<<endl;
+ os << hs.hanSuDung.ngay << "/" << hs.hanSuDung.thang << "/" << hs.hanSuDung.nam;
+ return os;
+}
+int main() {
+ hopSua hs;
+ cin >> hs;
+ cout << hs;
+ return 0;
+}

@@ -1,0 +1,55 @@
+using System;
+
+namespace ChuyenBay
+{
+    class ChuyenBay
+    {
+        public string ma_cb;
+        public DateTime ngay_bay;
+        public TimeSpan gio_bay;
+        public string noi_di;
+        public string noi_den;
+
+        public void Nhap()
+        {
+            Console.Write("");
+            ma_cb = Console.ReadLine();
+
+            Console.Write("");
+            int ngay = int.Parse(Console.ReadLine());
+            int thang = int.Parse(Console.ReadLine());
+            int nam = int.Parse(Console.ReadLine());
+            ngay_bay = new DateTime(nam, thang, ngay);
+
+            Console.Write("");
+            int gio = int.Parse(Console.ReadLine());
+            int phut = int.Parse(Console.ReadLine());
+            gio_bay = new TimeSpan(gio, phut, 0);
+
+            Console.Write("");
+            noi_di = Console.ReadLine();
+
+            Console.Write("");
+            noi_den = Console.ReadLine();
+        }
+
+        public void Xuat()
+        {
+            Console.WriteLine("ma chuyen bay: {0}", ma_cb);
+            Console.WriteLine("ngay bay: {0:dd/MM/yyyy}", ngay_bay);
+            Console.WriteLine("gio bay: {0:%h}:{0:mm}", gio_bay);
+            Console.WriteLine("noi di: {0}", noi_di);
+            Console.WriteLine("noi den: {0}", noi_den);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ChuyenBay chuyenBay = new ChuyenBay();
+            chuyenBay.Nhap();
+            chuyenBay.Xuat();
+        }
+    }
+}

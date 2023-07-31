@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    int n, k, x;
+    vector<int> v;
+    
+    scanf("%d%d", &n, &k);
+    
+    if(k > 0) for(int i = 0; i < n; ++i) v.push_back(i);
+    else {v.push_back(0); for(int i = 1; i < n; ++i) v.push_back(n - i);}
+    
+    int vt = 0; k = abs(k);
+    
+    while(v.size())
+    {
+        vt += k - 1;
+        vt %= v.size();
+        printf("%d ", v[vt]);
+        v.erase(v.begin() + vt);
+    }
+    
+    return 0;
+}

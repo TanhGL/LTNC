@@ -1,0 +1,82 @@
+#include bitsstdc++.h
+using namespace std;
+
+struct Stack {
+    vectorchar data;
+};
+
+void init(Stack &st) {
+    st.data.clear();
+}
+
+void push(Stack &st, char x) {
+    st.data.push_back(x);
+}
+
+char top(Stack st) {
+    return st.data.back();
+}
+
+void pop(Stack &st) {
+    st.data.pop_back();
+}
+
+bool empty(Stack st) {
+    return st.data.empty();
+}
+
+bool full(Stack st) {
+     Không cần xét trường hợp stack đầy trong vector
+     Vì vector có thể tự động mở rộng kích thước
+    return false;
+}
+
+int prior(char ch) {
+    if (ch == '+'  ch == '-') return 1;
+    if (ch == ''  ch == ''  ch == '%') return 2;
+    return 0;  Trả về 0 nếu không phải toán tử
+}
+
+int main() {
+    string s;
+    getline(cin, s);  Đọc cả dòng chứa biểu thức trung tố
+
+    Stack st;
+    init(st);
+
+    for (int i = 0; i  s.size(); i++) {
+        if (isdigit(s[i])) {
+             Xử lý cho trường hợp số hạng có nhiều chữ số
+            int num = 0;
+            while (i  s.size() && isdigit(s[i])) {
+                num = num  10 + (s[i] - '0');
+                i++;
+            }
+            i--;  Giảm lại i để xét tiếp các ký tự khác
+            cout  num   ;
+        } else if (s[i] == '(') {
+            push(st, s[i]);
+        } else if (s[i] == '+'  s[i] == '-'  s[i] == ''  s[i] == ''  s[i] == '%') {
+            while (!empty(st) && top(st) != '(' && prior(top(st)) = prior(s[i])) {
+                cout  top(st)   ;
+                pop(st);
+            }
+            push(st, s[i]);
+        } else if (s[i] == ')') {
+            while (!empty(st) && top(st) != '(') {
+                cout  top(st)   ;
+                pop(st);
+            }
+            if (!empty(st) && top(st) == '(') {
+                pop(st);
+            }
+        }
+    }
+
+    while (!empty(st)) {
+        cout  top(st)   ;
+        pop(st);
+    }
+
+    return 0;
+}

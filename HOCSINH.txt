@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cstring>
+#include <iomanip>
+
+using namespace std;
+
+struct HOCSINH {
+    char tenHocSinh[30];
+    int diemToan;
+    int diemVan;
+    float diemTrungBinh;
+};
+
+// Hàm nhập mảng học sinh
+void nhapMangHocSinh(HOCSINH hocSinh[], int n) {
+    for (int i = 0; i < n; i++) {
+        // cout << "Nhap ten hoc sinh thu " << i + 1 << ": ";
+        cin.ignore();
+        cin.getline(hocSinh[i].tenHocSinh, 30);
+
+        // cout << "Nhap diem toan: ";
+        cin >> hocSinh[i].diemToan;
+
+        // cout << "Nhap diem van: ";
+        cin >> hocSinh[i].diemVan;
+
+        cin >> hocSinh[i].diemTrungBinh;
+    }
+}
+
+// Hàm xuất mảng học sinh
+void xuatMangHocSinh(HOCSINH hocSinh[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << setprecision(2) << fixed << hocSinh[i].tenHocSinh << " – Toan: " << hocSinh[i].diemToan << " – Van: " << hocSinh[i].diemVan << " – DiemTB: " << hocSinh[i].diemTrungBinh << endl;
+    }
+}
+
+// Hàm đếm số lượng học sinh giỏi
+int demHocSinhGioi(HOCSINH hocSinh[], int n) {
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        if (hocSinh[i].diemToan > 8 && hocSinh[i].diemVan >8 ){
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+       int n;
+    // cout << "Nhap so luong hoc sinh: ";
+    cin >> n;
+
+    HOCSINH hocSinh[n];
+
+    nhapMangHocSinh(hocSinh, n);
+
+    // cout << "Mang hoc sinh: " << endl;
+    xuatMangHocSinh(hocSinh, n);
+    
+    int count = demHocSinhGioi(hocSinh, n);
+    cout << count << endl;
+
+    return 0;
+}

@@ -1,0 +1,121 @@
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+// Khai báo cấu trúc Stack
+struct Stack {
+    char data[100];
+    int top;
+};
+
+// Khởi tạo Stack rỗng
+void init(Stack &s) {
+    s.top = -1;
+}
+
+// Kiểm tra Stack rỗng
+bool empty(Stack &s) {
+    return s.top == -1;
+}
+
+// Kiểm tra Stack đầy
+bool full(Stack &s) {
+    return s.top == 99;
+}
+
+// Đưa phần tử vào đỉnh Stack
+void push(Stack &s, char x) {
+    if (full(s)) {
+        cout << "Stack overflow!" << endl;
+        return;
+    }
+    s.data[++s.top] = x;
+}
+
+// Lấy phần tử ở đỉnh Stack
+char top(Stack &s) {
+    if (empty(s)) {
+        cout << "Stack underflow!" << endl;
+        return '\0';
+    }
+    return s.data[s.top];
+}
+
+// Xóa phần tử ở đỉnh Stack
+void pop(Stack &s) {
+    if (empty(s)) {
+        cout << "Stack underflow!" << endl;
+        return;
+    }
+    s.top--;
+}
+
+// Kiểm tra xem một ký tự có phải là toán tử hay không
+bool isOperator(char c) {
+    return c == '+' || c == '-' || c == '*' || c == '/';
+}
+
+// Kiểm tra độ ưu tiên của toán tử
+int precedence(char op) {
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+// Chuyển đổi biểu thức trung tố sang hậu tố
+string infixToPostfix(string infix) {
+    string postfix;
+    Stack s;
+    init(s);
+    for (char c : infix) {
+        if (isdigit(c)) {
+            postfix += c;
+            postfix += ' ';
+        } else if (c == '(') {
+            push(s, c);
+        } else if (c == ')') {
+            while (!empty(s) && top(s) != '(') {
+                postfix += top(s);
+                postfix += ' ';
+                pop(s);
+            }
+            if (!empty(s) && top(s) == '(') {
+                pop(s);
+            } else {
+                cout <<  endl;
+                return "";
+            }
+        } else if (isOperator(c)) {
+            while (!empty(s) && isOperator(top(s)) && precedence(top(s)) >= precedence(c)) {
+                postfix += top(s);
+                postfix += ' ';
+                pop(s);
+            }
+            push(s, c);
+        } else {
+            cout << endl;
+            return "";
+        }
+    }
+    while (!empty(s)) {
+        if (top(s) == '(') {
+           
+            return "";
+        }
+        postfix += top(s);
+        postfix += ' ';
+        pop(s);
+    }
+    return postfix;
+}
+
+int main() {
+    string infix;
+   
+    getline(cin, infix);
+    string postfix = infixToPostfix(infix);
+    cout <<  postfix << endl;
+    return 0;
+}

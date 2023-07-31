@@ -1,0 +1,127 @@
+
+#include <iostream>
+using namespace std;
+
+// Định nghĩa lớp phân số
+class PhanSo {
+  private:
+    // Thuộc tính tử số và mẫu số
+    int tu, mau;
+
+  public:
+    // Phương thức khởi tạo mặc định
+    PhanSo() {
+      tu = 0;
+      mau = 1;
+    }
+
+    // Phương thức khởi tạo có tham số
+    PhanSo(int a, int b) {
+      tu = a;
+      mau = b;
+    }
+
+    // Phương thức nhập phân số từ bàn phím
+    void nhap() {
+      cin >> tu;
+      cin >> mau;
+    }
+
+    // Phương thức xuất phân số ra màn hình
+    void xuat() {
+      cout << tu << "/" << mau << endl;
+    }
+
+    // Phương thức lấy tử số của phân số
+    int layTu() {
+      return tu;
+    }
+
+    // Phương thức lấy mẫu số của phân số
+    int layMau() {
+      return mau;
+    }
+
+    // Phương thức gán giá trị cho tử số của phân số
+    void ganTu(int a) {
+      tu = a;
+    }
+
+    // Phương thức gán giá trị cho mẫu số của phân số
+    void ganMau(int b) {
+      mau = b;
+    }
+
+    // Phương thức nghịch đảo phân số
+    PhanSo nghichDao() {
+      return PhanSo(mau, tu);
+    }
+
+    // Phương thức tìm ước chung lớn nhất của hai số nguyên
+    int ucln(int a, int b) {
+      if (b == 0) return a;
+      return ucln(b, a % b);
+    }
+
+    // Phương thức rút gọn phân số
+    void rutGon() {
+      int u = ucln(tu, mau);
+      tu /= u;
+      mau /= u;
+    }
+
+    // Phương thức cộng hai phân số
+    PhanSo cong(PhanSo p) {
+      int t = tu * p.mau + p.tu * mau;
+      int m = mau * p.mau;
+      return PhanSo(t, m);
+    }
+
+    // Phương thức trừ hai phân số
+    PhanSo tru(PhanSo p) {
+      int t = tu * p.mau - p.tu * mau;
+      int m = mau * p.mau;
+      return PhanSo(t, m);
+    }
+
+    // Phương thức nhân hai phân số
+    PhanSo nhan(PhanSo p) {
+      int t = tu * p.tu;
+      int m = mau * p.mau;
+      return PhanSo(t, m);
+    }
+
+    // Phương thức chia hai phân số
+    PhanSo chia(PhanSo p) {
+      int t = tu * p.mau;
+      int m = mau * p.tu;
+      return PhanSo(t, m);
+    }
+
+    // Phương thức so sánh hai phân số
+    bool sosanh(PhanSo p) {
+      return (tu * p.mau == p.tu * mau);
+    }
+};
+
+// Hàm chính để kiểm tra lớp phân số
+int main() {
+  // Khai báo và nhập hai phân số a và b
+  PhanSo a;
+  a.nhap();
+
+  // Xuất hai phân số vừa nhập ra màn hình
+  a.xuat();
+  cout << a.layTu() << endl;
+  cout << a.layMau() << endl;
+  // Tạo các biến để lưu kết quả các thao tác với hai phân số
+  PhanSo c, d;
+  c = a.nghichDao(); // Nghịch đảo phân số a
+  c.xuat();
+  a.rutGon();
+  a.xuat();
+  d = a.cong(c);
+  d.xuat();
+
+  return 0;
+}

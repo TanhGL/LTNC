@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+struct HopSua{
+    string brand;
+    string weight;
+    string expirationDate;
+};
+
+istream& operator >> (istream& in, HopSua &h){
+    in >> h.brand >> h.weight >> h.expirationDate;
+    return in;
+}
+
+ostream& operator << (ostream& out, HopSua h){
+    out << h.brand << " " << h.weight << " " << h.expirationDate;
+    return out;
+}
+
+int countBefore2003(HopSua h[], int n) {
+    int count = 0;
+    for(int i=0; i<n; i++){
+        string newExpirationDate = h[i].expirationDate.substr(h[i].expirationDate.length() - 4, 4);
+        int year = stoi(newExpirationDate);
+        if (year < 2003) {
+            count++;
+        }
+    }
+    return count;
+}
+
+bool isDate1BeforeDate2(string& date1, string& date2) {
+    tm tm1 = {};
+    tm tm2 = {};
+
+    istringstream ss1(date1);
+    ss1 >> get_time(&tm1, "%d/%m/%Y");
+
+    istringstream ss2(date2);
+    ss2 >> get_time(&tm2, "%d/%m/%Y");
+
+    time_t time1 = mktime(&tm1);
+    time_t time2 = mktime(&tm2);
+
+    return time1 < time2;
+}
+
+void swap(HopSua &h1, HopSua &h2){
+    HopSua h = h1;
+    h1 = h2;
+    h2 = h;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    HopSua h[n];
+    for(int i=0; i<n; i++){
+        cin >> h[i];
+    }
+    
+    // for(int i=0; i<n; i++){
+    //     cout << h[i];
+    // }
+
+    cout << countBefore2003(h, n) << endl;
+    
+    HopSua temp = h[0];
+    for(int i=1; i<n; i++){
+        if(isDate1BeforeDate2(temp.expirationDate, h[i].expirationDate)){
+            temp = h[i];
+        }
+    }
+    cout << temp << endl;
+    
+    for(int i=0; i<n-1; i++){
+        int midIndex = i;
+        for(int j=i+1; j<n; j++){
+            if(isDate1BeforeDate2(h[j].expirationDate, h[i].expirationDate)){
+                swap(h[i], h[j]);
+            }
+        }
+    }
+    for(int i=0; i<n; i++){
+        if(i == n-1){
+            string newBrand = h[i].brand.substr(0, h[i].brand.length()-1);
+            cout << newBrand;
+        }
+        else{
+            cout << h[i].brand;
+        }
+    }
+
+    return 0;
+}

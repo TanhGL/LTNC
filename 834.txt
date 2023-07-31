@@ -1,0 +1,156 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+// Khai báo cấu trúc dữ liệu cho một nhân viên (NHANVIEN)
+struct NHANVIEN {
+    string maNhanVien;
+    string tenNhanVien;
+    float luongNhanVien;
+    NHANVIEN* next;
+};
+
+// Hàm nhập thông tin cho một nhân viên (NHANVIEN)
+void nhapNhanVien(NHANVIEN*& nhanVien) {
+    nhanVien = new NHANVIEN;
+    cin.ignore(); // Loại bỏ ký tự newline còn sót lại sau khi nhập mã nhân viên
+    getline(cin, nhanVien->maNhanVien);
+    getline(cin, nhanVien->tenNhanVien);
+    cin >> nhanVien->luongNhanVien;
+    nhanVien->next = NULL;
+}
+
+// Hàm thêm một nhân viên vào danh sách liên kết
+void themNhanVien(NHANVIEN*& danhSach, NHANVIEN* nhanVien) {
+    if (!danhSach) {
+        danhSach = nhanVien;
+    } else {
+        NHANVIEN* current = danhSach;
+        while (current->next) {
+            current = current->next;
+        }
+        current->next = nhanVien;
+    }
+}
+
+// Hàm xuất thông tin của một nhân viên (NHANVIEN)
+void xuatNhanVien(const NHANVIEN* nhanVien) {
+    cout << nhanVien->maNhanVien << endl;
+    cout << nhanVien->tenNhanVien << endl;
+    cout << fixed << setprecision(0) << nhanVien->luongNhanVien << endl;
+}
+
+// Hàm xuất danh sách liên kết các nhân viên
+void xuatDanhSach(const NHANVIEN* danhSach) {
+    const NHANVIEN* current = danhSach;
+    while (current) {
+        xuatNhanVien(current);
+        current = current->next;
+    }
+}
+
+// Hàm tìm nhân viên có lương cao nhất trong danh sách
+NHANVIEN* timNhanVienLuongCaoNhat(const NHANVIEN* danhSach) {
+    const NHANVIEN* current = danhSach;
+    NHANVIEN* nhanVienLuongCaoNhat = NULL;
+    float luongMax = 0.0;
+
+    while (current) {
+        if (current->luongNhanVien > luongMax) {
+            luongMax = current->luongNhanVien;
+            nhanVienLuongCaoNhat = const_cast<NHANVIEN*>(current); // Loại bỏ const để trả về con trỏ có thể thay đổi
+        }
+        current = current->next;
+    }
+
+    return nhanVienLuongCaoNhat;
+}
+
+// Hàm tính tổng lương của các nhân viên trong danh sách
+float tinhTongLuong(const NHANVIEN* danhSach) {
+    const NHANVIEN* current = danhSach;
+    float tongLuong = 0.0;
+    while (current) {
+        tongLuong += current->luongNhanVien;
+        current = current->next;
+    }
+    return tongLuong;
+}
+
+// Hàm sắp xếp danh sách liên kết tăng dần theo lương nhân viên (sử dụng thuật toán sắp xếp chèn)
+void sapXepTheoLuong(NHANVIEN*& danhSach) {
+    if (!danhSach || !danhSach->next) {
+        return;
+    }
+
+    NHANVIEN* sorted = danhSach;
+    danhSach = danhSach->next;
+    sorted->next = NULL;
+
+    while (danhSach) {
+        NHANVIEN* current = danhSach;
+        danhSach = danhSach->next;
+
+        if (current->luongNhanVien < sorted->luongNhanVien) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            NHANVIEN* p = sorted;
+            
+            
+            
+            
+            while (p->next && p->next->luongNhanVien <= current->luongNhanVien) {
+                p = p->next;
+            }
+            current->next = p->next;
+            p->next = current;
+        }
+    }
+
+    danhSach = sorted;
+}
+
+// Hàm giải phóng bộ nhớ cho danh sách liên kết
+void giaiPhongDanhSach(NHANVIEN*& danhSach) {
+    while (danhSach) {
+        NHANVIEN* next = danhSach->next;
+        delete danhSach;
+        danhSach = next;
+    }
+}
+
+int main() {
+    int soLuongNhanVien;
+    cin >> soLuongNhanVien;
+
+    NHANVIEN* danhSach = NULL;
+    for (int i = 0; i < soLuongNhanVien; i++) {
+        NHANVIEN* nhanVien;
+        nhapNhanVien(nhanVien);
+        themNhanVien(danhSach, nhanVien);
+    }
+
+    // Xuất danh sách nhân viên
+    xuatDanhSach(danhSach);
+
+    // Tìm nhân viên có lương cao nhất trong danh sách
+    NHANVIEN* nhanVienLuongCaoNhat = timNhanVienLuongCaoNhat(danhSach);
+    cout << nhanVienLuongCaoNhat->tenNhanVien << endl;
+
+    // Tính tổng lương của các nhân viên
+    float tongLuong = tinhTongLuong(danhSach);
+    cout << tongLuong << endl;
+
+    // Sắp xếp danh sách tăng dần theo lương nhân viên
+    sapXepTheoLuong(danhSach);
+
+    // Xuất danh sách sau khi đã sắp xếp
+    xuatDanhSach(danhSach);
+
+    // Giải phóng bộ nhớ cho danh sách liên kết
+    giaiPhongDanhSach(danhSach);
+
+    return 0;
+}

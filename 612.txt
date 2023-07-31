@@ -1,0 +1,42 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct cauThu {
+ string ma;
+ string ten;
+ string date;
+};
+void nhap(cauThu& ct) {
+
+ getline(cin, ct.ma);
+ getline(cin, ct.ten);
+ getline(cin, ct.date);
+}
+void xuat(cauThu& ct) {
+ cout << ct.ma << endl;
+ cout << ct.ten << endl;
+ if (ct.date.size() == 10) {
+  ct.date.erase(ct.date.begin() + 2);
+  ct.date.erase(ct.date.begin() + 4);
+ }
+ string day, month, year;
+ for (int i = 0; i < ct.date.size(); i++) {
+  if (i < 2) {
+   day.push_back(ct.date[i]);
+  }
+  if (i >= 2 && i<4) {
+   month.push_back(ct.date[i]);
+  }
+  if (i >= 4) {
+   year.push_back(ct.date[i]);
+  }
+ }
+ cout << day << "/" << month << "/" << year;
+}
+int main() {
+ cauThu ct;
+ nhap(ct);
+ xuat(ct);
+ return 0;
+}

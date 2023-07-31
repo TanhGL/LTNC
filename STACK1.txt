@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+#include <stack>
+using namespace std;
+
+int main() {
+    string input;
+    getline(cin, input);
+
+    stack<char> my_stack;
+
+    for (char ch : input) {
+        if (ch == '*') {
+            if (!my_stack.empty()) {
+                cout << my_stack.top() << " ";
+                my_stack.pop();
+            }
+        }
+        else {
+            my_stack.push(ch);
+        }
+    }
+
+    cout << endl;
+
+    return 0;
+}

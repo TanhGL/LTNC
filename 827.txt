@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct phong{
+    string ma;
+    string ten;
+    double dg;
+    int sl;
+    int tt;
+    bool operator < (phong a){
+        return dg < a.dg;
+    }
+};
+istream& operator >> (istream& in,phong &a){
+    in>>a.ma>>a.ten>>a.dg>>a.sl>>a.tt;
+    return in;
+}
+ostream& operator << (ostream& out,phong a){
+    out<<"Ma Phong: "<<a.ma<<endl;
+    out<<"Ten Phong: "<<a.ten<<endl;
+    out<<"Don Gia: "<<a.dg<<endl;
+    out<<"So Luong Giuong: "<<a.sl<<endl;
+    out<<"Tinh Trang: "<<a.tt;
+}
+int main(){
+    int n; cin>>n;
+    vector<phong> v;
+    for (int i = 0; i < n; i++){
+        phong tmp; cin>>tmp;
+        v.push_back(tmp);
+    }
+    // xuat p trong;
+    for (int i = 0; i < n; i++){
+        if (v[i].tt == 0) cout<<v[i]<<endl;
+    }
+    // tong giuong;
+    int res = 0;
+    for (int i = 0; i < n; i++){
+        res += v[i].sl;
+    }
+    cout<<res<<endl;
+    sort(v.begin(),v.end());
+    for (int i = 0; i < n; i++){
+        cout<<v[i]<<endl;
+    }
+    return 0;
+}

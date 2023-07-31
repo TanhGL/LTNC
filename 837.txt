@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+
+struct LopHoc {
+    char tenLop[31];
+    int siSo;
+    struct HocSinh {
+        char tenHocSinh[31];
+        float diemTrungBinh;
+    } danhSachHocSinh[50];
+};
+
+void nhapLopHoc(LopHoc& lopHoc) {
+
+    cin.getline(lopHoc.tenLop, 31);
+    cin >> lopHoc.siSo;
+    cin.ignore();
+    for (int i = 0; i < lopHoc.siSo; i++) {
+        cin.getline(lopHoc.danhSachHocSinh[i].tenHocSinh, 31);
+        cin >> lopHoc.danhSachHocSinh[i].diemTrungBinh;
+        cin.ignore();
+    }
+}
+
+void xuatLopHoc(LopHoc lopHoc) {
+    cout << lopHoc.tenLop << endl;
+    for (int i = 0; i < lopHoc.siSo; i++) {
+        cout << lopHoc.danhSachHocSinh[i].tenHocSinh << " " << lopHoc.danhSachHocSinh[i].diemTrungBinh << endl;
+    }
+}
+
+LopHoc timLopSiSoDongNhat(LopHoc dsLopHoc[], int soLuongLopHoc) {
+    LopHoc lopSiSoDongNhat = dsLopHoc[0];
+    for (int i = 1; i < soLuongLopHoc; i++) {
+        if (dsLopHoc[i].siSo > lopSiSoDongNhat.siSo) {
+            lopSiSoDongNhat = dsLopHoc[i];
+        }
+    }
+    return lopSiSoDongNhat;
+}
+
+int timHocSinhDiemTBLonNhat(LopHoc dsLop[], int n, int& indexHS) {
+    float maxDiemTB = dsLop[0].danhSachHocSinh[0].diemTrungBinh;
+    int indexLop = 0;
+    indexHS = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < dsLop[i].siSo; j++) {
+            if (dsLop[i].danhSachHocSinh[j].diemTrungBinh > maxDiemTB) {
+                maxDiemTB = dsLop[i].danhSachHocSinh[j].diemTrungBinh;
+                indexLop = i;
+                indexHS = j;
+            }
+        }
+    }
+    return indexLop;
+}
+int main() {
+    int soLuongLopHoc;
+    cin >> soLuongLopHoc;
+    cin.ignore();
+    LopHoc dsLopHoc[100];
+    for (int i = 0; i < soLuongLopHoc; i++) {
+        nhapLopHoc(dsLopHoc[i]);
+    }
+    for (int i = 0; i < soLuongLopHoc; i++) {
+        xuatLopHoc(dsLopHoc[i]);
+    }
+    LopHoc l = timLopSiSoDongNhat(dsLopHoc, soLuongLopHoc);
+    cout << l.tenLop << endl;
+    int indexHS = 0;
+    int indexLop = timHocSinhDiemTBLonNhat(dsLopHoc, soLuongLopHoc, indexHS);
+    cout << dsLopHoc[indexLop].danhSachHocSinh[indexHS].tenHocSinh;
+}
