@@ -1,0 +1,120 @@
+
+#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct SOTIETKIEM{
+    char ma[6];
+    char loaitietkiem[11];
+    char ten[31];
+    long int cmnd;
+    char ngaymo[11];    
+    double sotien;
+    SOTIETKIEM* next;
+};
+
+struct List{
+    SOTIETKIEM* head;
+    SOTIETKIEM* tail;
+};
+
+// Hàm khởi tạo danh sách liên kết
+void Init(List &l){
+    l.head = l.tail = NULL;
+}
+
+// Hàm tạo một nút mới
+SOTIETKIEM* CreateNode(){
+    SOTIETKIEM* p = new SOTIETKIEM;
+    cin >> p->ma;
+    cin.ignore();
+    cin.getline(p->loaitietkiem,11);
+    cin.getline(p->ten, 31);
+    cin >> p->cmnd;
+    cin >> p->ngaymo;
+    cin >> p->sotien;
+    p->next = NULL;
+    return p;
+}
+
+// Hàm thêm một nút vào cuối danh sách
+void AddTail(List &l, SOTIETKIEM* p){
+    if (l.head == NULL){
+        l.head = l.tail = p;
+    }
+    else{
+        l.tail->next = p;
+        l.tail = p;
+    }
+}
+
+// Hàm nhập danh sách
+void NhapDS(List &l){
+    int n; // số lượng sổ tiết kiệm
+    cin >> n;
+    Init(l); // khởi tạo danh sách rỗng
+    for (int i = 0; i < n; i++){
+        SOTIETKIEM* p = CreateNode(); // tạo một nút mới
+        AddTail(l, p); // thêm nút vào cuối danh sách
+    }
+}
+
+// Hàm xuất một nút
+void XuatNode(SOTIETKIEM* p){
+    cout << p->ma << "-" << p->loaitietkiem << "-" << p->ten << "-" << p->cmnd << "-" << p->ngaymo << "-" <<fixed<<setprecision(0)<< p->sotien << endl;
+}
+
+// Hàm xuất danh sách
+void XuatDS(List l){
+    for (SOTIETKIEM* p = l.head; p != NULL; p = p->next){
+        XuatNode(p); // xuất một nút
+    }
+}
+
+// Hàm tính tổng số tiền gửi có trong danh sách
+double TongTien(List l){
+    double tong = 0;
+    for (SOTIETKIEM* p = l.head; p != NULL; p = p->next){
+        tong += p->sotien; // cộng dồn số tiền gửi của mỗi nút
+    }
+    return tong;
+}
+
+// Hàm tìm địa chỉ một nút theo CMND
+SOTIETKIEM* TimKiem(List l, long int cmnd){
+    for (SOTIETKIEM* p = l.head; p != NULL; p = p->next){
+        if (p->cmnd == cmnd){ // nếu CMND trùng khớp
+            return p; // trả về địa chỉ của nút
+        }
+    }
+    return NULL; // không tìm thấy
+}
+
+// Hàm main xử lí theo trình tự yêu cầu
+int main(){
+    
+    List l; // khai báo danh sách liên kết
+    
+    long int cmnd; // số CMND cần tìm kiếm
+    
+
+    cin >> cmnd;
+    
+    NhapDS(l); // nhập danh sách
+    
+
+    XuatDS(l); // xuất danh sách
+    
+    cout  << TongTien(l) << endl; // xuất tổng số tiền gửi
+    
+    SOTIETKIEM* q = TimKiem(l, cmnd); // tìm kiếm nút theo CMND
+    
+    if (q != NULL){ // nếu tìm thấy
+        
+        XuatNode(q); // xuất nút
+        
+    }
+    
+    return 0;
+}
