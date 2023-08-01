@@ -1,0 +1,56 @@
+
+#include <bits/stdc++.h>
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+// Khai báo cấu trúc HOCSINH
+struct HOCSINH{
+    char ten[31];
+    int diemvan;
+    int diemtoan;
+    double diemTB;
+};
+
+// Hàm nhập thông tin một học sinh
+void nhap(HOCSINH &hs){
+    cin.ignore();
+    cin.getline(hs.ten, 31);
+    cin >> hs.diemtoan >> hs.diemvan >> hs.diemTB;
+}
+
+// Hàm xuất thông tin một học sinh
+void xuat(HOCSINH hs){
+    cout << hs.ten << " - Toan: " << hs.diemtoan << " - Van: " << hs.diemvan << " - DiemTB: " << fixed << setprecision(1) << hs.diemTB << endl;
+}
+
+// Hàm kiểm tra một học sinh có phải là học sinh giỏi hay không
+bool hsg(HOCSINH hs){
+    return hs.diemtoan >= 8 && hs.diemvan >= 8;
+}
+
+int main(){
+    // Khai báo số học sinh và mảng các học sinh
+    int n;
+    cin >> n;
+    HOCSINH ds[n];
+
+    // Nhập thông tin các học sinh
+    for(int i = 0; i < n; i++){
+        nhap(ds[i]);
+    }
+
+    // Xuất thông tin các học sinh
+    for(int i = 0; i < n; i++){
+        xuat(ds[i]);
+    }
+
+    // Đếm và xuất số lượng học sinh giỏi
+    int dem = 0;
+    for(int i = 0; i < n; i++){
+        if(hsg(ds[i])) dem++;
+    }
+    cout << "So luong HSG: " << dem << endl;
+
+    return 0;
+}

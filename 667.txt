@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Tinh {
+    int ma_tinh;
+    string ten_tinh;
+    int dan_so;
+    float dien_tich;
+};
+
+// Hàm nhập thông tin của một tỉnh từ chuỗi đầu vào
+Tinh nhapTinh(string input) {
+    Tinh tinh;
+    stringstream ss(input);
+    string token;
+
+    getline(ss, token, '_');
+    tinh.ma_tinh = stoi(token);
+
+    getline(ss, token, '_');
+    tinh.ten_tinh = token;
+
+    getline(ss, token, '_');
+    tinh.dan_so = stoi(token);
+
+    getline(ss, token, '_');
+    tinh.dien_tich = stof(token);
+
+    return tinh;
+}
+
+// Hàm xuất danh sách mã tỉnh có dân số lớn hơn 1,000,000
+void xuattinhLonHon1Trieu(vector<Tinh>& tinhList) {
+    bool found = false;
+    for (const auto& tinh : tinhList) {
+        if (tinh.dan_so > 1000000) {
+            cout << tinh.ma_tinh << " ";
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "0";
+    }
+    cout << endl;
+}
+
+// Hàm tìm tỉnh có diện tích lớn nhất và xuất tên của tỉnh đó
+void timTinhDienTichLonNhat(vector<Tinh>& tinhList) {
+    auto maxTinh = max_element(tinhList.begin(), tinhList.end(), [](const Tinh& a, const Tinh& b) {
+        return a.dien_tich < b.dien_tich;
+    });
+    cout << maxTinh->ten_tinh << endl;
+}
+
+// Hàm so sánh để sắp xếp tỉnh giảm dần theo diện tích
+bool soSanhTinh(const Tinh& a, const Tinh& b) {
+    return a.dien_tich > b.dien_tich;
+}
+
+// Hàm sắp xếp và xuất danh sách mã tỉnh giảm dần theo diện tích
+void sapXepTinhTheoDienTich(vector<Tinh>& tinhList) {
+    sort(tinhList.begin(), tinhList.end(), soSanhTinh);
+    for (const auto& tinh : tinhList) {
+        cout << setw(2) << setfill('0') << tinh.ma_tinh << " "; // Sử dụng setw() và setfill()
+    }
+    cout << endl;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cin.ignore();
+
+    vector<Tinh> tinhList;
+    for (int i = 0; i < n; ++i) {
+        string input;
+        getline(cin, input);
+        Tinh tinh = nhapTinh(input);
+        tinhList.push_back(tinh);
+    }
+
+    xuattinhLonHon1Trieu(tinhList);
+    timTinhDienTichLonNhat(tinhList);
+    sapXepTinhTheoDienTich(tinhList);
+
+    return 0;
+}

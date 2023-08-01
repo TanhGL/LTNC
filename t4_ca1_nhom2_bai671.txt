@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+// Khai báo cấu trúc CHUYENBAY
+struct CHUYENBAY{
+    char ma[6];
+    int gio,phut;
+    int ngay,thang,nam;
+    string noiden;
+};
+
+// Hàm nhập thông tin một chuyến bay
+void nhap(CHUYENBAY &cb){
+    cin >> cb.ma >> cb.ngay >> cb.thang >> cb.nam >> cb.gio >> cb.phut;
+    cin.ignore();
+    getline(cin, cb.noiden);
+}
+
+// Hàm xuất thông tin một chuyến bay
+void xuat(CHUYENBAY cb){
+    cout << cb.ma << endl;
+    if(cb.ngay  < 10 && cb.thang < 10)
+        cout <<"0"<< cb.ngay << "/0" << cb.thang << "/" << cb.nam << endl;
+    else if(cb.ngay  < 10){
+        cout <<"0"<< cb.ngay << "/" << cb.thang << "/" << cb.nam << endl;
+        
+    } else {
+        cout << cb.ngay << "/0" << cb.thang << "/" << cb.nam << endl;
+    }
+    if(cb.phut < 10)
+    cout << cb.gio << ":0" << cb.phut << endl;
+    else cout << cb.gio << ":" << cb.phut << endl;
+    cout << cb.noiden << endl;
+}
+
+// Hàm tạo khóa cho một ngày
+string taoKhoa(int ngay, int thang, int nam){
+    string khoa;
+    if(ngay  < 10 && thang < 10){
+        khoa = "0" + to_string(ngay) + "/0" + to_string(thang) + "/" + to_string(nam);
+    }
+    else if(ngay  < 10){
+        khoa ="0" +  to_string(ngay) + "/" + to_string(thang) + "/" + to_string(nam);
+    } else 
+        khoa = to_string(ngay) + "/0" + to_string(thang) + "/" + to_string(nam);
+    return khoa;
+}
+
+// Hàm tìm một ngày có nhiều chuyến bay nhất trong mảng các chuyến bay
+string timNgayNhieuNhat(vector<CHUYENBAY> ds){
+    // Tạo một map để đếm số lượng chuyến bay theo ngày
+    map<string, int> dem;
+    for(int i = 0; i < ds.size(); i++){
+        string khoa = taoKhoa(ds[i].ngay, ds[i].thang, ds[i].nam);
+        dem[khoa]++;
+    }
+
+    // Tìm ngày có số lượng chuyến bay lớn nhất
+    string max = dem.begin()->first;
+    for(auto it = dem.begin(); it != dem.end(); it++){
+        if(it->second > dem[max]) max = it->first;
+    }
+    return max;
+}
+
+// Hàm tìm một chuyến bay trong mảng theo mã chuyến bay
+CHUYENBAY timChuyenBay(vector<CHUYENBAY> ds, char ma[]){
+    for(int i = 0; i < ds.size(); i++){
+        if(strcmp(ds[i].ma, ma) == 0) return ds[i];
+    }
+}
+
+int main(){
+    // Khai báo số chuyến bay và mảng các chuyến bay
+    int n;
+    cin >> n;
+    vector<CHUYENBAY> ds(n);
+
+    // Nhập thông tin các chuyến bay
+    for(int i = 0; i < n; i++){
+        nhap(ds[i]);
+    }
+
+    // Xuất thông tin các chuyến bay
+    for(int i = 0; i < n; i++){
+        xuat(ds[i]);
+    }
+
+    // Tìm và xuất ngày có nhiều chuyến bay nhất
+    string ngaynhieunhat = timNgayNhieuNhat(ds);
+    cout << ngaynhieunhat << endl;
+
+    // Nhập và xuất thông tin chuyến bay theo mã chuyến bay cho sẵn
+    char ma[6];
+    cin >> ma;
+    CHUYENBAY cb = timChuyenBay(ds, ma);
+    xuat(cb);
+
+    return 0;
+}

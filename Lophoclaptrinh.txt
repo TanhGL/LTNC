@@ -1,0 +1,91 @@
+
+#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Khai báo cấu trúc HOCSINH
+struct HOCSINH{
+    string ten;
+    double diemTB;
+};
+
+// Khai báo cấu trúc LOPHOC
+struct LOPHOC{
+    string tenlop;
+    int siso;
+    HOCSINH hs[50];
+};
+
+// Hàm nhập thông tin một học sinh
+void nhapHS(HOCSINH &hs){
+    cin.ignore();
+    getline(cin, hs.ten);
+    cin >> hs.diemTB;
+}
+
+// Hàm xuất thông tin một học sinh
+void xuatHS(HOCSINH hs){
+    cout << hs.ten  << endl;
+}
+
+// Hàm nhập thông tin một lớp học
+void nhapLH(LOPHOC &lh){
+    cin.ignore();
+    getline(cin, lh.tenlop);
+    cin >> lh.siso;
+    for(int i = 0; i < lh.siso; i++){
+        nhapHS(lh.hs[i]);
+    }
+}
+
+// Hàm xuất thông tin một lớp học
+void xuatLH(LOPHOC lh){
+    cout << lh.tenlop << endl;
+    for(int i = 0; i < lh.siso; i++){
+        xuatHS(lh.hs[i]);
+    }
+}
+
+// Hàm tìm một lớp có sĩ số đông nhất trong mảng các lớp học
+LOPHOC timLopDongNhat(vector<LOPHOC> ds){
+    LOPHOC max = ds[0];
+    for(int i = 1; i < ds.size(); i++){
+        if(ds[i].siso > max.siso) max = ds[i];
+    }
+    return max;
+}
+
+// Hàm tìm một học sinh có điểm trung bình lớn nhất trong mảng các lớp học
+HOCSINH timHSTBMax(vector<LOPHOC> ds){
+    HOCSINH max = ds[0].hs[0];
+    for(int i = 0; i < ds.size(); i++){
+        for(int j = 0; j < ds[i].siso; j++){
+            if(ds[i].hs[j].diemTB > max.diemTB) max = ds[i].hs[j];
+        }
+    }
+    return max;
+}
+
+int main(){
+    int n;
+    cin >> n;
+    vector<LOPHOC> ds(n);
+
+    for(int i = 0; i < n; i++){
+        nhapLH(ds[i]);
+    }
+
+    for(int i = 0; i < n; i++){
+        xuatLH(ds[i]);
+        cout << endl;
+    }
+    LOPHOC dongnhat = timLopDongNhat(ds);
+    cout << dongnhat.tenlop << endl;
+
+    HOCSINH tbmax = timHSTBMax(ds);
+    cout <<tbmax.ten << endl;
+
+    return 0;
+}
