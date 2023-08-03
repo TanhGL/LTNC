@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int to_hop(int n, int k) {
+    if (k == n) {
+        return 1;
+    }
+    if (k == 1) {
+        return n;
+    }
+    else {
+        return to_hop(n - 1, k) + to_hop(n - 1, k - 1);
+    }
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    cout << to_hop(n, k);
+    return 0;
+}
